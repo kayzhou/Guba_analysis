@@ -15,6 +15,8 @@ def get_type(content):
         return 'xinwen'
     elif content.startswith('研报日期：'):
         return 'yanbao'
+    elif content.startswith('公告日期：'):
+        return 'gonggao'
     else:
         return 'tweet'
 
@@ -34,9 +36,9 @@ for i, in_name in enumerate(os.listdir(in_dir)):
     for j, line in enumerate(open(in_name)):
         # print(line)
         d = delete_log(json.loads(line))
-        if d['content']:
+        if 'content' in d:
             _type = get_type(d['content'])
         else:
             _type = 'others'
-            with open('data/{}/{}'.format(_type, stock_name), 'a') as f:
-                f.write(json.dumps(d, ensure_ascii=False) + '\n')
+        with open('data/{}/{}'.format(_type, stock_name), 'a') as f:
+            f.write(json.dumps(d, ensure_ascii=False) + '\n')
