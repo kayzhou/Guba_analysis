@@ -1,10 +1,11 @@
 import json
+import linecache
 import os
 import re
-import numpy as np
 
 import jieba
-import linecache
+import numpy as np
+from acora import AcoraBuilder
 
 from emotion_cla.emo_cls import classify
 from emotion_cla.separate import separate
@@ -47,25 +48,35 @@ def pre_label():
 
 def get_train_data(in_name):
 
+    builder = AcoraBuilder([line.strip() for line in open('data/emoji.txt')])
+    ac = builder.build()
+
     for line in open(in_name):
         d = json.loads(line.strip())
         content = d['content']
-        title = d['title']
-        t_emo = d['title_pre_emo']
+        # title = d['title']
+        # t_emo = d['title_pre_emo']
         c_emo = d['content_pre_emo']
         
         # 标题和内容中要有一个有表情符
         # if not (re.search('\\[\\S+\\]', title) or re.search('\\[\\S+\\]', content)):
-        if '[点击查看原文]' in content:
-            continue
-        if not re.search('\\[\\S+\\]', content):
-            print('不满足要求 ...')
-            continue
 
-        # 内容长度5到200
-        if 5 < len(content) < 200:
-            with open('data/content/{}.txt'.format(c_emo), 'a') as f:
-                f.write(str(c_emo) + '\t' + content + '\n')
+        bingo = False
+        for kw, pos in ac.finditer(content):
+            bingo = True
+            break
+        
+        # if not re.search('\\[\\S+\\]', content):
+        #     print('不满足要求 ...')
+        #     continue
+
+        if bingo:
+            if '[点击查看原文]' in content:
+                continue
+            # 内容长度5到200
+            if 5 < len(content) < 200:
+                with open('data/content/{}.txt'.format(c_emo), 'a') as f:
+                    f.write(str(c_emo) + '\t' + content + '\n')
 
         # with open('data/title/{}.txt'.format(t_emo), 'a') as f:
         #     f.write(str(t_emo) + '\t' + title + '\n')
