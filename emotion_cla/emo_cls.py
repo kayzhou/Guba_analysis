@@ -1,6 +1,5 @@
 #coding:utf-8
 import sys
-import separate
 import os
 import math
 
@@ -12,7 +11,7 @@ pre_list = [math.log(pro) for pro in pre_list]
 
 def load_feature():
     global feature_dict
-    for line in open('words_pre_pro.last'):
+    for line in open('emotion_cla/words_pre_pro.last'):
         line_arr=line.strip().split('\t')
         feature=line_arr[0]
         pre_pro_list=[float(pre_pro) for pre_pro in line_arr[1:]]

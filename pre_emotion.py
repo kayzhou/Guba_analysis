@@ -1,4 +1,5 @@
 from emotion_cla.emo_cls import classify
+from emotion_cla.separate import separate
 
 import os
 import json
@@ -13,7 +14,7 @@ for i, in_name in enumerate(os.listdir(in_dir)):
     in_name = os.path.join(in_dir, in_name)
     for j, line in enumerate(open(in_name)):
         d = json.loads(line)
-        d['content_pre_emo'] = classify(d['content']) 
-        d['title_pre_emo'] = classify(d['title'])
+        d['content_pre_emo'] = classify(separate(d['content']))
+        d['title_pre_emo'] = classify(separate(d['title']))
         with open('{}/{}'.format(out_dir, stock_name), 'a') as f:
             f.write(json.dumps(d, ensure_ascii=False) + '\n')
