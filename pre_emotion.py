@@ -12,7 +12,8 @@ from emotion_cla.separate import separate
 
 in_dir = 'data/tweet'
 out_dir = 'data/tweet_emo'
-
+builder = AcoraBuilder([line.strip() for line in open('data/emoji.txt')])
+ac = builder.build()
 
 def random_ids(in_name, lens):
     '''
@@ -48,8 +49,7 @@ def pre_label():
 
 def get_train_data(in_name):
 
-    builder = AcoraBuilder([line.strip() for line in open('data/emoji.txt')])
-    ac = builder.build()
+
 
     for line in open(in_name):
         d = json.loads(line.strip())
