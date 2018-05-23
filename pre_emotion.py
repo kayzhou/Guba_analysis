@@ -1,5 +1,6 @@
 import json
 import os
+import re
 
 import jieba
 
@@ -28,17 +29,21 @@ def pre_label():
 
 def get_train_data(in_name):
 
+    
     for line in open(in_name):
         d = json.loads(line.strip())
         content = d['content']
         title = d['title']
         t_emo = d['title_pre_emo']
         c_emo = d['content_pre_emo']
+        if not re.search('\\[\\S+\\]', title):
+            print('不满足要求')
+            continue
         if 0 < len(content) < 200:
             with open('data/content/{}.txt'.format(c_emo), 'a') as f:
                 f.write(str(c_emo) + '\t' + content + '\n') 
         with open('data/title/{}.txt'.format(t_emo), 'a') as f:
-            f.write(str(t_emo) + '\t' + title + '\n') 
+            f.write(str(t_emo) + '\t' + title + '\n')
         
 
 if __name__ == '__main__':
