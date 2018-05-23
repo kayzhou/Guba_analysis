@@ -56,6 +56,8 @@ def get_train_data(in_name):
         
         # 标题和内容中要有一个有表情符
         # if not (re.search('\\[\\S+\\]', title) or re.search('\\[\\S+\\]', content)):
+        if '[点击查看原文]' in content:
+            continue
         if not re.search('\\[\\S+\\]', content):
             print('不满足要求 ...')
             continue
