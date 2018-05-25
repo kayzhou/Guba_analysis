@@ -19,7 +19,7 @@ def random_ids(in_name, out_name, lens):
     '''
     随机选择文本的行
     '''
-    out_file = open(out_name, 'w')
+    out_file = open(out_name, 'a')
     ids = set()
     _max = len(open(in_name).readlines())
     while len(ids) < lens:
@@ -94,4 +94,4 @@ if __name__ == '__main__':
     # get_train_data('data/002446.txt')
 
     for i in range(5):
-        random_ids('data/content/{}.txt'.format(i), 'data/content_3000/{}.txt'.format(i), 3000)
+        random_ids('data/content_all/{}.txt'.format(i), 'data/content_3000/{}.txt'.format(i), 3000)
