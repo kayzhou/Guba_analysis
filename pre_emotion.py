@@ -61,16 +61,16 @@ def get_train_data(in_name):
         # 标题和内容中要有一个有表情符
         # if not (re.search('\\[\\S+\\]', title) or re.search('\\[\\S+\\]', content)):
 
-        bingo = False
-        for kw, pos in ac.finditer(content):
-            bingo = True
-            break
+        # bingo = False
+        # for kw, pos in ac.finditer(content):
+        #     bingo = True
+        #     break
 
         # if not re.search('\\[\\S+\\]', content):
         #     print('不满足要求 ...')
         #     continue
 
-        # bingo = True
+        bingo = True
         if bingo:
             # 内容长度5到200
             if 10 < len(content) < 200:
@@ -83,17 +83,15 @@ def get_train_data(in_name):
 
 if __name__ == '__main__':
     # for line in open('data/random_ids.txt'):
-    for line in open('data/_id.txt'):
-        line = line.strip().split(',')[0]
-        print(line)
-        in_name = 'data/tweet_emo/' + line.strip() + '.txt'
-        get_train_data(in_name)
+    # # for line in open('data/_id.txt'):
+    #     line = line.strip().split(',')[0]
+    #     print(line)
+    #     in_name = 'data/tweet_emo/' + line.strip() + '.txt'
+    #     get_train_data(in_name)
 
 
     # random_ids('data/_id.txt', 100)
     # get_train_data('data/002446.txt')
 
-    '''
     for i in range(5):
-        random_ids('data/content/{}.txt'.format(i), 'data/content_5000/{}.txt'.format(i), 5000)
-    '''
+        random_ids('data/content/{}.txt'.format(i), 'data/content_3000/{}.txt'.format(i), 3000)
