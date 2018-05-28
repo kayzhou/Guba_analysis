@@ -80,6 +80,14 @@ def get_train_data(in_name):
         # with open('data/title/{}.txt'.format(t_emo), 'a') as f:
         #     f.write(str(t_emo) + '\t' + title + '\n')
 
+def label_split(in_name):
+    index = 0
+    for line in open(in_name):
+        with open(in_name[:-4] + '-({}).txt'.format(int(index / 500 + 1)), 'a') as f:
+            f.write(line)
+        print(index, int(index / 500 + 1))
+        index += 1
+
 
 if __name__ == '__main__':
     # for line in open('data/random_ids.txt'):
@@ -93,5 +101,8 @@ if __name__ == '__main__':
     # random_ids('data/_id.txt', 100)
     # get_train_data('data/002446.txt')
 
-    for i in range(5):
-        random_ids('data/content_all/{}.txt'.format(i), 'data/content_3000/{}.txt'.format(i), 3000)
+    # for i in range(5):
+    #     random_ids('data/content_all/{}.txt'.format(i), 'data/content_3000/{}.txt'.format(i), 3000)
+
+    for i in range(1, 5):
+        label_split('data/content_3000/{}.txt'.format(i))
