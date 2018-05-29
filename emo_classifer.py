@@ -1,11 +1,18 @@
-import torch
-import unicodedata
+import math
+import os
+import random
 import string
+import time
+import unicodedata
+
+import matplotlib.pyplot as plt
+import torch
+import torch.nn as nn
+from torch.autograd import Variable
 
 
 all_letters = string.ascii_letters + " .,;'"
 n_letters = len(all_letters)
-
 
 def unicode_to_ascii(s):
     return ''.join(
@@ -20,8 +27,6 @@ print(unicode_to_ascii('Ślusàrski'))
 category_lines = {}
 all_categories = []
 
-
-import os
 
 def readLines(filename):
     lines = open(filename).read().strip().split('\n')
@@ -59,10 +64,6 @@ def line_to_tensor(lines):
 
 print(letter_to_tensor('J'))
 print(line_to_tensor(['Jones', 'Chow']).size())
-
-
-import torch.nn as nn
-from torch.autograd import Variable
 
 
 class RNN(nn.Module):
@@ -108,7 +109,6 @@ def category_from_output(output):
 
 print(category_from_output(output))
 
-import random
 
 def random_training_pair():
     category = random.choice(all_categories)
@@ -139,3 +139,42 @@ def train(category_tensor, line_tensor):
     optimizer.step()
 
     return output, loss.data[0]
+
+
+
+n_epochs = 100000
+print_every = 5000
+plot_every = 1000
+
+current_loss = 0
+all_losses = []
+
+def time_since(since):
+    now = time.time()
+    s = now - since
+    m = math.floor(s / 60)
+    s -= m * 60
+    return '%dm %ds' % (m, s)
+
+start = time.time()
+
+for epoch in range(1, n_epochs + 1):
+    category , line, category_tensor, line_tensor = random_training_pair()
+    output, loss = train(category_tensor, line_tensor)
+    current_loss += loss
+
+    if epoch % print_every == 0:
+        guess, guess_i = category_from_output(output)
+        correct = '✓' if guess == category else '✗ (%s)' % category
+        print('%d %d%% (%s) %.4f %s / %s %s' % (epoch, epoch / n_epochs * 100, time_since(start), loss, line, guess, correct))
+
+    if epoch % plot_every == 0:
+        all_losses.append(current_loss / plot_every)
+        current_loss = 0
+
+
+# import matplotlib.ticker as ticker
+# %matplotlib inline
+
+plt.plot(all_losses)
+plt.show()
