@@ -38,10 +38,10 @@ def load_train_data(in_name):
 def train():
 #     X, y = load_train_data('train_data_one_hot-20180710.txt')
     X, y = load_train_data('train_data_ACL-20180710.txt')
-    
+
     # 划分数据集
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=41)
-    
+
     # 初始化分类器
 #     clf = RandomForestClassifier(max_depth=10, random_state=1)
 #     clf = BernoulliNB()
@@ -59,5 +59,5 @@ def train():
         # print(y[0])
         y_pred.append(y[0])
     print(classification_report(y_test, y_pred))
-    
+
 train()
