@@ -3,6 +3,7 @@ from thulac import thulac
 import os
 import json
 import numpy as np
+from tqdm import tqdm
 
 thu = thulac(seg_only=True)
 clf = joblib.load('emo-LR-v1.model')
@@ -44,26 +45,26 @@ def emo_predict(sentence):
                 count += 1
             if count > 0:
                 vector = vector / count
-        return vector
+        return vector.reshape(1, -1)
 
     X = sentence2vector(sentence)
     y_hat = clf.predict(X)
     return y_hat
-            
+
 
 '''
 打预标签
 '''
-for i, in_name in enumerate(os.listdir(in_dir)):
-    print(i)
+for i, in_name in tqdm(enumerate(os.listdir(in_dir))):
+    print(i, in_name)
     in_name = os.path.join(in_dir, in_name)
     for j, line in enumerate(open(in_name)):
         d = json.loads(line)
         content = d['content']
         if 10 < len(content) < 200:
-            y_hat = emo_predict(content)
+            y_hat = emo_predict(content)[0]
             with open('data/content/{}.txt'.format(y_hat), 'a') as f:
                 f.write(str(y_hat) + '\t' + content + '\n')
-            
-               
+
+
 
