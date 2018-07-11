@@ -22,6 +22,25 @@ def load_stopword():
     return set(json.load(open('data/stopword-zh.json')))
 
 
+def load_word_vec():
+    """
+    加载ACL2018词向量
+    """
+    word_vec = {}
+    print('加载词向量中 ...')
+    for i, line in enumerate(open('data/sgns.merge.word')):
+#         if i <= 100:
+#             continue
+        if i > 10000:
+            break
+        words = line.strip().split(' ')
+        word = words[0]
+        vec = np.array([float(num) for num in words[1:]])
+        word_vec[word] = vec
+    print('加载词完成！')
+    return word_vec
+
+    
 def load_train_data(in_name):
     """
     加载训练数据
