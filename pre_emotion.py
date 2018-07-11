@@ -80,7 +80,12 @@ def get_train_data(in_name):
         # with open('data/title/{}.txt'.format(t_emo), 'a') as f:
         #     f.write(str(t_emo) + '\t' + title + '\n')
 
+
 def label_split(in_name):
+    """
+    分割数据，用于数据标注划分
+    """
+
     index = 0
     for line in open(in_name):
         with open(in_name[:-4] + '-({}).txt'.format(int(index / 500 + 1)), 'a') as f:
