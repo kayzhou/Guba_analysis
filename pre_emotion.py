@@ -15,10 +15,23 @@ out_dir = 'data/tweet_emo'
 builder = AcoraBuilder([line.strip() for line in open('data/emoji.txt')])
 ac = builder.build()
 
+
+def load_labelled():
+    lines = set()
+    for i in range(5):
+        for line in open('data/content_3000/{}.txt'.format(i)):
+            lines.add(line.strip())
+
+    return lines
+
+have_lines = load_labelled()
+
+
 def random_ids(in_name, out_name, lens):
     '''
     随机选择文本的行
     '''
+    global have_lines
     out_file = open(out_name, 'a')
     ids = set()
     _max = len(open(in_name).readlines())
@@ -28,8 +41,9 @@ def random_ids(in_name, out_name, lens):
             continue
         line = linecache.getline(in_name, num)
         # _id = line.strip().split(',')[0]
-        ids.add(num)
-        out_file.write(line)
+        if line not in have_lines:
+            ids.add(num)
+            out_file.write(line)
     out_file.close()
     return ids
 
@@ -106,8 +120,9 @@ if __name__ == '__main__':
     # random_ids('data/_id.txt', 100)
     # get_train_data('data/002446.txt')
 
-    # for i in range(5):
-    #     random_ids('data/content_all/{}.txt'.format(i), 'data/content_3000/{}.txt'.format(i), 3000)
+    for i in range(5):
+        random_ids('data/content_all/{}.txt'.format(i), 'data/content_2000/{}.txt'.format(i), 2000)
 
-    for i in range(1, 5):
-        label_split('data/content_3000/{}.txt'.format(i))
+        
+    # for i in range(1, 5):
+    #     label_split('data/content_3000/{}.txt'.format(i))
