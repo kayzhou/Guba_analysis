@@ -10,6 +10,7 @@ from sklearn.naive_bayes import BernoulliNB
 from sklearn.svm import SVC
 from thulac import thulac
 from tqdm import tqdm_notebook as tqdm
+from sklearn.externals import joblib
 
 thu = thulac(seg_only=True)
 
@@ -43,9 +44,9 @@ def train():
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=41)
 
     # 初始化分类器
-#     clf = RandomForestClassifier(max_depth=10, random_state=1)
+    clf = RandomForestClassifier(max_depth=20, random_state=3)
 #     clf = BernoulliNB()
-    clf = SVC(C=0.5) # SVM较为耗时
+    # clf = SVC(C=0.5) # SVM较为耗时
 
     # 执行训练
     clf.fit(X_train, y_train)
@@ -59,5 +60,12 @@ def train():
         # print(y[0])
         y_pred.append(y[0])
     print(classification_report(y_test, y_pred))
+
+
+    # 保存模型
+    clf = RandomForestClassifier(max_depth=20, random_state=3)
+    y = np.reshape(y, (1, -1))
+    clf.fit(X, y)
+    joblib.dump(clf, "emo-rf-v1.model")
 
 train()
