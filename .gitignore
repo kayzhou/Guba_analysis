@@ -106,3 +106,4 @@ data/
 .DS_Store
 *.txt
 *.model
+model/
