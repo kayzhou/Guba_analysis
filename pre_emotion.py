@@ -16,15 +16,15 @@ builder = AcoraBuilder([line.strip() for line in open('data/emoji.txt')])
 ac = builder.build()
 
 
-def load_labelled():
-    lines = set()
-    for i in range(5):
-        for line in open('data/content_3000/{}.txt'.format(i)):
-            lines.add(line.strip())
+# def load_labelled():
+#     lines = set()
+#     for i in range(5):
+#         for line in open('data/content_3000/{}.txt'.format(i)):
+#             lines.add(line.strip())
 
-    return lines
+#     return lines
 
-have_lines = load_labelled()
+# have_lines = load_labelled()
 
 
 def random_ids(in_name, out_name, lens):
@@ -108,6 +108,26 @@ def label_split(in_name):
         index += 1
 
 
+def what_the_fuck():
+    labels = []
+    in_dir = 'data/labelled'
+
+    for in_name in os.listdir(in_dir):
+        _in = os.path.join(in_dir, in_name)
+        # print(_in)
+        for i, line in enumerate(open(_in)):
+            if line.strip() == '':
+                continue
+            label = line.split('\t')[0]
+            s= line.split('\t')[1]
+            # 1234：四种情绪，-：没有情绪，x：不确定
+            if label in ['1', '2', '3', '4', '-']:
+                if label == '-':
+                    label = '0'
+                with open('data/labelled_split/{}.txt'.format(label), 'a') as f:
+                    f.write(line)
+
+
 if __name__ == '__main__':
     # for line in open('data/random_ids.txt'):
     # # for line in open('data/_id.txt'):
@@ -120,9 +140,11 @@ if __name__ == '__main__':
     # random_ids('data/_id.txt', 100)
     # get_train_data('data/002446.txt')
 
-    for i in range(5):
-        random_ids('data/content_all/{}.txt'.format(i), 'data/content_2000/{}.txt'.format(i), 2000)
+    # for i in range(5):
+    #     random_ids('data/content_all/{}.txt'.format(i), 'data/content_2000/{}.txt'.format(i), 2000)
 
         
     # for i in range(1, 5):
     #     label_split('data/content_3000/{}.txt'.format(i))
+
+    what_the_fuck()
