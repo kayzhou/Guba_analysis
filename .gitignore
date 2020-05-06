@@ -107,3 +107,5 @@ data/
 *.txt
 *.model
 model/
+build_dataset.ipynb
+disk/
